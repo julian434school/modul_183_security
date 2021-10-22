@@ -5,6 +5,7 @@ from pprint import pprint
 import json
 
 
+# Contains all important weather and location data from rest call
 class FilteredItems:
     country: str
     place: str
@@ -45,11 +46,13 @@ class ClothesStatus:
     # If hoodie is True, tshirt = False
     tshirt: bool = False
 
-    # Either "jeans", "trousers", "shorts" - default is "jeans"
+    # Either "jeans", "shorts" - default is "jeans"
     pants: str = "jeans"
 
     # Either "boots", "sneakers" or "sandals" - default is "sneakers"
     shoes: str = "sneakers"
+
+    show_outfit: bool = True
 
 
 def return_needed_info():
@@ -85,7 +88,7 @@ def return_clothes_image_logic():
     # Snowy
     if int(filtered_obj.temp_c) <= 0:
         clothes_status.shoes = "boots"
-        clothes_status.pants = "trousers"
+        clothes_status.pants = "jeans"
         clothes_status.tshirt = False
         clothes_status.hoodie = False
         clothes_status.jacket = "heavy"
@@ -95,7 +98,7 @@ def return_clothes_image_logic():
     # Cold
     elif int(filtered_obj.temp_c) <= 10:
         clothes_status.shoes = "boots"
-        clothes_status.pants = "trousers"
+        clothes_status.pants = "jeans"
         clothes_status.tshirt = False
         clothes_status.hoodie = False
         clothes_status.jacket = "heavy"
@@ -105,7 +108,7 @@ def return_clothes_image_logic():
     # Not too cold, not warm either
     elif int(filtered_obj.temp_c) <= 14:
         clothes_status.shoes = "sneakers"
-        clothes_status.pants = "trousers"
+        clothes_status.pants = "jeans"
         clothes_status.tshirt = False
         clothes_status.hoodie = False
         clothes_status.jacket = "medium"
@@ -115,7 +118,7 @@ def return_clothes_image_logic():
     # Fall weather
     elif int(filtered_obj.temp_c) <= 19:
         clothes_status.shoes = "sneakers"
-        clothes_status.pants = "trousers"
+        clothes_status.pants = "jeans"
         clothes_status.tshirt = False
         clothes_status.hoodie = False
         clothes_status.jacket = "light"
@@ -125,7 +128,7 @@ def return_clothes_image_logic():
     # Spring Weather
     elif int(filtered_obj.temp_c) <= 23:
         clothes_status.shoes = "sneakers"
-        clothes_status.pants = "trousers"
+        clothes_status.pants = "jeans"
         clothes_status.tshirt = False
         clothes_status.hoodie = True
         clothes_status.jacket = "empty"
@@ -151,6 +154,8 @@ def return_clothes_image_logic():
         clothes_status.jacket = "empty"
         clothes_status.scarf = False
         clothes_status.hat = "cap"
+
+    clothes_status.show_outfit = True
 
     print("CLOTHES STATUS")
     pprint(vars(clothes_status))
@@ -212,7 +217,7 @@ def return_weather_image_logic():
             or int(filtered_obj.condition_code) == 1276 \
             or int(filtered_obj.condition_code) == 1279 \
             or int(filtered_obj.condition_code) == 1282:
-        weather_status.rainy_image = True
+        weather_status.storm_image = True
 
     # Snowy
     if int(filtered_obj.condition_code) == 1066 \
