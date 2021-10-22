@@ -97,13 +97,13 @@ def return_clothes_image_logic():
 
     # Cold
     elif int(filtered_obj.temp_c) <= 10:
-        clothes_status.shoes = "boots"
+        clothes_status.shoes = "sneakers"
         clothes_status.pants = "jeans"
         clothes_status.tshirt = False
         clothes_status.hoodie = False
         clothes_status.jacket = "heavy"
         clothes_status.scarf = False
-        clothes_status.hat = "beanie"
+        clothes_status.hat = "empty"
 
     # Not too cold, not warm either
     elif int(filtered_obj.temp_c) <= 14:
