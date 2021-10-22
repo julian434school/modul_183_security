@@ -85,7 +85,7 @@ def return_clothes_image_logic():
     filtered_obj: FilteredItems = return_needed_info()
     clothes_status: ClothesStatus = ClothesStatus()
 
-    filtered_obj.temp_c = 20
+    filtered_obj.temp_c = 40
 
     # Snowy
     if int(filtered_obj.temp_c) <= 0:
@@ -148,7 +148,7 @@ def return_clothes_image_logic():
         clothes_status.hat = "empty"
 
     # Summer Weather
-    elif int(filtered_obj.temp_c) > 30:
+    elif int(filtered_obj.temp_c) > 31:
         clothes_status.shoes = "sandals"
         clothes_status.pants = "shorts"
         clothes_status.tshirt = True
