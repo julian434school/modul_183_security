@@ -116,11 +116,23 @@
                 <img src="static/clothes/medium_jacket.png" alt="medium jacket" width="15%">
             </picture>
             {% endif %}
-            {% if clothes_data.jacket == "light" %}
+            {% if clothes_data.jacket == True %}
             <picture>
                 <img src="static/clothes/light_jacket.png" alt="light jacket" width="15%">
             </picture>
             {% endif %}
+            {% endif %}
+
+            {% if clothes_data.hoodie == True %}
+            <picture>
+                <img src="static/clothes/hoodie.png" alt="heavy jacket" width="15%">
+            </picture>
+            {% endif %}
+
+            {% if clothes_data.jacket == "medium" %}
+            <picture>
+                <img src="static/clothes/tshirt.png" alt="medium jacket" width="15%">
+            </picture>
             {% endif %}
 
             {% if clothes_data.pants == "jeans" %}
