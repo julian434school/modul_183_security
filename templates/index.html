@@ -17,8 +17,71 @@
     <div class="b-example-divider"></div>
 
     <div class="container my-5">
-        <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+        <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 rounded-3 border shadow-lg">
             <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+
+                {% if weather_data.moon_stars_image == True or weather_data.moon_image == True %}
+                <audio src="static/audio/night_sounds.mp3">
+                    <p>If you are reading this, it is because your browser does not support the audio element. </p>
+                </audio>
+                {% endif %}
+
+                {% if weather_data.sun_image == True or weather_data.partly_cloudy_image == True %}
+                <iframe src="static/audio/rain_sound_effects.mp3" allow="autoplay" style="display:none"
+                        id="iframeAudio">
+                </iframe>
+                <audio autoplay loop id="playAudio">
+                    <source src="static/audio/rain_sound_effects.mp3">
+                    <p>If you are reading this, it is because your browser does not support the audio element. </p>
+                </audio>
+                {% endif %}
+
+                {% if weather_data.moon_stars_image == True %}
+                <picture>
+                    <!-- <source srcset="mdn-logo.png 1x, mdn-logo_x2.png 2x, mdn-logo_x3.png 3x"> -->
+                    <img src="static/weather/clear_night.png" class="img-responsive" alt="Clear night" width="15%">
+                </picture>
+                {% endif %}
+                {% if weather_data.moon_image == True %}
+                <picture>
+                    <img src="static/weather/night.png" class="img-responsive" alt="Normal Night" width="15%">
+                </picture>
+                {% endif %}
+                {% if weather_data.sun_image == True %}
+                <picture>
+                    <img src="static/weather/sunny.png" class="img-responsive" alt="Sunny" width="15%">
+                </picture>
+                {% endif %}
+                {% if weather_data.partly_cloudy_image == True %}
+                <picture>
+                    <img src="static/weather/partly_cloudy.png" class="img-responsive" alt="Partly Cloudy" width="15%">
+                </picture>
+                {% endif %}
+                {% if weather_data.cloudy_image == True %}
+                <picture>
+                    <img src="static/weather/cloudy.png" class="img-responsive" alt="Cloudy" width="15%">
+                </picture>
+                {% endif %}
+                {% if weather_data.drizzle_image == True %}
+                <picture>
+                    <img src="static/weather/drizzle.png" class="img-responsive" alt="Drizze" width="15%">
+                </picture>
+                {% endif %}
+                {% if weather_data.rainy_image == True %}
+                <picture>
+                    <img src="static/weather/raining.png" class="img-responsive" alt="Raining" width="15%">
+                </picture>
+                {% endif %}
+                {% if weather_data.storm_image == True %}
+                <picture>
+                    <img src="static/weather/storming.png" class="img-responsive" alt="Storming" width="15%">
+                </picture>
+                {% endif %}
+                {% if weather_data.snowy_image == True %}
+                <picture>
+                    <img src="static/weather/snowing.png" class="img-responsive" alt="Snowing" width="15%">
+                </picture>
+                {% endif %}
                 <h2 class="display-4 fw-bold lh-1">{{data.temp_c}} C° | {{data.condition_text}}</h2>
                 <h1>{{data.place}}, {{data.country}}</h1>
                 <h3>{{data.date}} | {{data.time}}</h3>
@@ -30,143 +93,12 @@
                         <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Generate Outfit
                         </button>
                     </form>
-                    <form action="/generate-outfit/" method="post">
-                        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Upload Clothing item
-                        </button>
-                    </form>
-
                     </button>
                 </div>
             </div>
-            <!-- <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden"> -->
             <div class="col-lg-4 offset-lg-1 p-0">
-                {% if weather_data.moon_stars_image == True %}
-                <picture>
-                    <!-- <source srcset="mdn-logo.png 1x, mdn-logo_x2.png 2x, mdn-logo_x3.png 3x"> -->
-                    <img src="static/weather/clear_night.png" alt="Clear night">
-                </picture>
-                {% endif %}
-                {% if weather_data.moon_image == True %}
-                <picture>
-                    <img src="static/weather/night.png" alt="Normal Night">
-                </picture>
-                {% endif %}
-                {% if weather_data.sun_image == True %}
-                <picture>
-                    <img src="static/weather/sunny.png" alt="Sunny">
-                </picture>
-                {% endif %}
-                {% if weather_data.partly_cloudy_image == True %}
-                <picture>
-                    <img src="static/weather/partly_cloudy.png" alt="Partly Cloudy">
-                </picture>
-                {% endif %}
-                {% if weather_data.cloudy_image == True %}
-                <picture>
-                    <img src="static/weather/cloudy.png" alt="Cloudy">
-                </picture>
-                {% endif %}
-                {% if weather_data.drizzle_image == True %}
-                <picture>
-                    <img src="static/weather/drizzle.png" alt="Drizze">
-                </picture>
-                {% endif %}
-                {% if weather_data.rainy_image == True %}
-                <picture>
-                    <img src="static/weather/raining.png" alt="Raining">
-                </picture>
-                {% endif %}
-                {% if weather_data.storm_image == True %}
-                <picture>
-                    <img src="static/weather/storming.png" alt="Storming">
-                </picture>
-                {% endif %}
-                {% if weather_data.snowy_image == True %}
-                <picture>
-                    <img src="static/weather/snowing.png" alt="Snowing">
-                </picture>
-                {% endif %}
-
-                <img class="rounded-lg-3" src="bootstrap-docs.png" alt="" width="720">
+                <img src="static/clothes/outfit.png" class="img-responsive" alt="Snowing" width="50%">
             </div>
-
-            {% if clothes_data.show_outfit == True %}
-
-            {% if clothes_data.hat != "empty" %}
-            {% if clothes_data.hat == "cap" %}
-            <picture>
-                <img src="static/clothes/sun_hat.png" alt="Snowing" width="15%">
-            </picture>
-            {% endif %}
-            {% if clothes_data.hat == "beanie" %}
-            <picture>
-                <img src="static/clothes/beanie.png" alt="Snowing" width="15%">
-            </picture>
-            {% endif %}
-            {% endif %}
-
-            {% if clothes_data.jacket != "empty" %}
-            {% if clothes_data.jacket == "heavy" %}
-            <picture>
-                <img src="static/clothes/heavy_jacket.png" alt="heavy jacket" width="15%">
-            </picture>
-            {% endif %}
-            {% if clothes_data.jacket == "medium" %}
-            <picture>
-                <img src="static/clothes/medium_jacket.png" alt="medium jacket" width="15%">
-            </picture>
-            {% endif %}
-            {% if clothes_data.jacket == True %}
-            <picture>
-                <img src="static/clothes/light_jacket.png" alt="light jacket" width="15%">
-            </picture>
-            {% endif %}
-            {% endif %}
-
-            {% if clothes_data.hoodie == True %}
-            <picture>
-                <img src="static/clothes/hoodie.png" alt="heavy jacket" width="15%">
-            </picture>
-            {% endif %}
-
-            {% if clothes_data.tshirt == True %}
-            <picture>
-                <img src="static/clothes/tshirt.png" alt="medium jacket" width="15%">
-            </picture>
-            {% endif %}
-
-            {% if clothes_data.pants == "jeans" %}
-            <picture>
-                <img src="static/clothes/jeans.png" alt="jeans" width="15%">
-            </picture>
-            {% endif %}
-            {% if clothes_data.pants == "shorts" %}
-            <picture>
-                <img src="static/clothes/shorts.png" alt="shorts" width="15%">
-            </picture>
-            {% endif %}
-
-            {% if clothes_data.shoes == "boots" %}
-            <picture>
-                <img src="static/clothes/boots_v2.png" alt="sneaker" width="15%">
-            </picture>
-            {% endif %}
-            {% if clothes_data.shoes == "sneakers" %}
-            <picture>
-                <img src="static/clothes/sneaker.png" alt="sneaker" width="15%">
-            </picture>
-            {% endif %}
-            {% if clothes_data.shoes == "sandals" %}
-            <picture>
-                <img src="static/clothes/slipper.png" alt="slipper" width="15%">
-            </picture>
-            {% endif %}
-
-
-            <!-- Outfit Closing Tag -->
-            {% endif %}
-
-
         </div>
     </div>
 

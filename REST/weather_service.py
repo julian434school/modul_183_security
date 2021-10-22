@@ -1,8 +1,10 @@
 # http://api.weatherapi.com/v1/current.json?key=c809b1ec469c442c818104121211510&q=Basel&aqi=no
 
-import requests
+import os
 from pprint import pprint
-import json
+
+import requests
+from PIL import Image
 
 
 # Contains all important weather and location data from rest call
@@ -55,6 +57,27 @@ class ClothesStatus:
     show_outfit: bool = True
 
 
+def generate_combined_image(images_list: list):
+    # Before anything, delete the outfit.png so a fresh outfit can be generated
+    if os.path.exists("static/clothes/outfit.png"):
+        os.remove("static/clothes/outfit.png")
+
+    images = [Image.open(x) for x in images_list]
+    widths, heights = zip(*(i.size for i in images))
+
+    total_width = max(widths)
+    max_height = sum(heights)
+
+    new_im = Image.new('RGBA', (total_width, max_height))
+
+    y_offset = 0
+    for im in images:
+        new_im.paste(im, (0, y_offset))
+        y_offset += im.size[0]
+
+    new_im.save('static/clothes/outfit.png')
+
+
 def return_needed_info():
     response = requests.get(
         "http://api.weatherapi.com/v1/current.json?key=c809b1ec469c442c818104121211510&q=Basel&aqi=no").json()
@@ -85,8 +108,6 @@ def return_clothes_image_logic():
     filtered_obj: FilteredItems = return_needed_info()
     clothes_status: ClothesStatus = ClothesStatus()
 
-    filtered_obj.temp_c = 40
-
     # Snowy
     if int(filtered_obj.temp_c) <= 0:
         clothes_status.shoes = "boots"
@@ -106,6 +127,8 @@ def return_clothes_image_logic():
         clothes_status.jacket = "heavy"
         clothes_status.scarf = False
         clothes_status.hat = "empty"
+        generate_combined_image(
+            ['static/clothes/heavy_jacket.png', 'static/clothes/jeans.png', 'static/clothes/sneakers.png'])
 
     # Not too cold, not warm either
     elif int(filtered_obj.temp_c) <= 14:
