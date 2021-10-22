@@ -85,6 +85,8 @@ def return_clothes_image_logic():
     filtered_obj: FilteredItems = return_needed_info()
     clothes_status: ClothesStatus = ClothesStatus()
 
+    filtered_obj.temp_c = 40
+
     # Snowy
     if int(filtered_obj.temp_c) <= 0:
         clothes_status.shoes = "boots"
