@@ -33,34 +33,19 @@ class WeatherStatus:
     snowy_image: bool = False
 
 
-class ClothesStatus:
-    # Either "cap", "beanie" or "empty"
-    hat: str = "empty"
-
-    scarf: bool = False
-
-    # Either "heavy", "medium", "light" or "empty"
-    jacket: str = "empty"
-
-    # If jacket is set, hoodie = False
-    hoodie: bool = False
-
-    # If hoodie is True, tshirt = False
-    tshirt: bool = False
-
-    # Either "jeans", "shorts" - default is "jeans"
-    pants: str = "jeans"
-
-    # Either "boots", "sneakers" or "sandals" - default is "sneakers"
-    shoes: str = "sneakers"
-
-    show_outfit: bool = True
-
-
 def generate_combined_image(images_list: list):
     # Before anything, delete the outfit.png so a fresh outfit can be generated
     if os.path.exists("static/clothes/outfit.png"):
         os.remove("static/clothes/outfit.png")
+
+    if os.path.exists("static/clothes/outfit.jpg"):
+        os.remove("static/clothes/outfit.jpg")
+
+    if os.path.exists("static/clothes/outfit_small.png"):
+        os.remove("static/clothes/outfit_small.png")
+
+    if os.path.exists("static/clothes/outfit_small.jpg"):
+        os.remove("static/clothes/outfit_small.jpg")
 
     images = [Image.open(x) for x in images_list]
     widths, heights = zip(*(i.size for i in images))
@@ -68,14 +53,32 @@ def generate_combined_image(images_list: list):
     total_width = max(widths)
     max_height = sum(heights)
 
-    new_im = Image.new('RGBA', (total_width, max_height))
+    img_png_normal = Image.new('RGBA', (total_width, max_height))
+    img_jpg_normal = Image.new('RGB', (total_width, max_height))
+    img_png_small = Image.new('RGBA', (int(total_width / 2), int(max_height / 2)))
+    img_jpg_small = Image.new('RGB', (int(total_width / 2), int(max_height / 2)))
 
-    y_offset = 0
+    y_offset_regular = 0
+    y_offset_small = 0
     for im in images:
-        new_im.paste(im, (0, y_offset))
-        y_offset += im.size[0]
 
-    new_im.save('static/clothes/outfit.png')
+        # Regular 512 x 512 format, resize to 256 x 256 because otherwise it'd be too big
+        # im = im.resize((256, 256))
+        img_png_normal.paste(im, (0, y_offset_regular))
+        img_jpg_normal.paste(im, (0, y_offset_regular))
+        y_offset_regular += im.size[0]
+
+        # Smaller scaled 256 x 256 format for tablet & phone
+        im = im.resize((256, 256))
+        img_png_small.paste(im, (0, y_offset_small))
+        img_jpg_small.paste(im, (0, y_offset_small))
+        y_offset_small += im.size[0]
+
+    img_png_normal.save('static/clothes/outfit.png')
+    img_jpg_normal.save('static/clothes/outfit.jpg')
+
+    img_png_small.save('static/clothes/outfit_small.png')
+    img_jpg_small.save('static/clothes/outfit_small.jpg')
 
 
 def return_needed_info():
@@ -98,94 +101,49 @@ def return_needed_info():
     filtered_obj.temp_c = response["current"]["temp_c"]
     filtered_obj.condition_humidity = response["location"]["name"]
 
-    print(response)
-    print(filtered_obj)
-
     return filtered_obj
 
 
 def return_clothes_image_logic():
     filtered_obj: FilteredItems = return_needed_info()
-    clothes_status: ClothesStatus = ClothesStatus()
 
     # Snowy
     if int(filtered_obj.temp_c) <= 0:
-        clothes_status.shoes = "boots"
-        clothes_status.pants = "jeans"
-        clothes_status.tshirt = False
-        clothes_status.hoodie = False
-        clothes_status.jacket = "heavy"
-        clothes_status.scarf = True
-        clothes_status.hat = "beanie"
+        generate_combined_image(
+            ['static/clothes/beanie.png', 'static/clothes/scarf.png', 'static/clothes/heavy_jacket.png',
+             'static/clothes/jeans.png', 'static/clothes/boots.png'])
 
     # Cold
     elif int(filtered_obj.temp_c) <= 10:
-        clothes_status.shoes = "sneakers"
-        clothes_status.pants = "jeans"
-        clothes_status.tshirt = False
-        clothes_status.hoodie = False
-        clothes_status.jacket = "heavy"
-        clothes_status.scarf = False
-        clothes_status.hat = "empty"
         generate_combined_image(
             ['static/clothes/heavy_jacket.png', 'static/clothes/jeans.png', 'static/clothes/sneakers.png'])
 
     # Not too cold, not warm either
     elif int(filtered_obj.temp_c) <= 14:
-        clothes_status.shoes = "sneakers"
-        clothes_status.pants = "jeans"
-        clothes_status.tshirt = False
-        clothes_status.hoodie = False
-        clothes_status.jacket = "medium"
-        clothes_status.scarf = False
-        clothes_status.hat = "empty"
+        generate_combined_image(
+            ['static/clothes/medium_jacket.png', 'static/clothes/jeans.png', 'static/clothes/sneakers.png'])
 
     # Fall weather
     elif int(filtered_obj.temp_c) <= 19:
-        clothes_status.shoes = "sneakers"
-        clothes_status.pants = "jeans"
-        clothes_status.tshirt = False
-        clothes_status.hoodie = False
-        clothes_status.jacket = "light"
-        clothes_status.scarf = False
-        clothes_status.hat = "empty"
+        generate_combined_image(
+            ['static/clothes/light_jacket.png', 'static/clothes/jeans.png', 'static/clothes/sneakers.png'])
+
 
     # Spring Weather
     elif int(filtered_obj.temp_c) <= 23:
-        clothes_status.shoes = "sneakers"
-        clothes_status.pants = "jeans"
-        clothes_status.tshirt = False
-        clothes_status.hoodie = True
-        clothes_status.jacket = "empty"
-        clothes_status.scarf = False
-        clothes_status.hat = "empty"
+        generate_combined_image(
+            ['static/clothes/hoodie.png', 'static/clothes/jeans.png', 'static/clothes/sneakers.png'])
 
     # Warm Weather
     elif int(filtered_obj.temp_c) <= 30:
-        clothes_status.shoes = "sneakers"
-        clothes_status.pants = "shorts"
-        clothes_status.tshirt = True
-        clothes_status.hoodie = False
-        clothes_status.jacket = "empty"
-        clothes_status.scarf = False
-        clothes_status.hat = "empty"
+        generate_combined_image(
+            ['static/clothes/tshirt.png', 'static/clothes/shorts.png', 'static/clothes/sneakers.png'])
 
     # Summer Weather
     elif int(filtered_obj.temp_c) > 31:
-        clothes_status.shoes = "sandals"
-        clothes_status.pants = "shorts"
-        clothes_status.tshirt = True
-        clothes_status.hoodie = False
-        clothes_status.jacket = "empty"
-        clothes_status.scarf = False
-        clothes_status.hat = "cap"
-
-    clothes_status.show_outfit = True
-
-    print("CLOTHES STATUS")
-    pprint(vars(clothes_status))
-
-    return clothes_status
+        generate_combined_image(
+            ['static/clothes/cap.png', 'static/clothes/tshirt.png', 'static/clothes/shorts.png',
+             'static/clothes/sandals.png'])
 
 
 def return_weather_image_logic():
@@ -259,13 +217,8 @@ def return_weather_image_logic():
             or int(filtered_obj.condition_code) == 1282:
         weather_status.snowy_image = True
 
-    print("WEATHER STATUS")
-    pprint(vars(weather_status))
-
     return weather_status
 
-
-# return_needed_info()
 
 return_clothes_image_logic()
 return_weather_image_logic()

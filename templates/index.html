@@ -11,11 +11,13 @@
     <title>Title</title>
 </head>
 <body>
+<div class="header"
+     style="position: fixed;left: 0;top: 0;width: 100%;background-color: #563d7c;color: white;text-align: center; margin">
+    <h1>Was-soll-ich-anziehen-outift-generierer <b>PRO</b></h1>
+</div>
+<br>
 <main>
-    <h1 class="visually-hidden">Heroes examples</h1>
-
     <div class="b-example-divider"></div>
-
     <div class="container my-5">
         <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 rounded-3 border shadow-lg">
             <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
@@ -38,7 +40,6 @@
 
                 {% if weather_data.moon_stars_image == True %}
                 <picture>
-                    <!-- <source srcset="mdn-logo.png 1x, mdn-logo_x2.png 2x, mdn-logo_x3.png 3x"> -->
                     <img src="static/weather/clear_night.png" class="img-responsive" alt="Clear night" width="15%">
                 </picture>
                 {% endif %}
@@ -47,7 +48,7 @@
                     <img src="static/weather/night.png" class="img-responsive" alt="Normal Night" width="15%">
                 </picture>
                 {% endif %}
-                {% if weather_data.sun_image == True %}
+                {% if weather_data.sunny_image == True %}
                 <picture>
                     <img src="static/weather/sunny.png" class="img-responsive" alt="Sunny" width="15%">
                 </picture>
@@ -81,31 +82,41 @@
                 <picture>
                     <img src="static/weather/snowing.png" class="img-responsive" alt="Snowing" width="15%">
                 </picture>
+                <br>
                 {% endif %}
+                <br>
+                <br>
                 <h2 class="display-4 fw-bold lh-1">{{data.temp_c}} C° | {{data.condition_text}}</h2>
                 <h1>{{data.place}}, {{data.country}}</h1>
                 <h3>{{data.date}} | {{data.time}}</h3>
-                <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s
-                    most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid
-                    system, extensive prebuilt components, and powerful JavaScript plugins.</p>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <form action="/generate-outfit/" method="post">
-                        <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Generate Outfit
-                        </button>
-                    </form>
-                    </button>
-                </div>
+                <p class="lead">Sie wissen nicht, was sie anziehen sollen? Kein Problem. Mit unserer einfachen no-click
+                    und Oma-freundlicher User Interface zeigen wir Ihnen, anhand vom Wetter,
+                    was Sie anziehen sollten.</p>
             </div>
             <div class="col-lg-4 offset-lg-1 p-0">
-                <img src="static/clothes/outfit.png" class="img-responsive" alt="Snowing" width="50%">
+                <h4>Ihr persönlich generiertes Outfit</h4>
+                <br>
+                <picture>
+                    <!-- Outfit scales for desktop and laptop screens with regular res -->
+                    <!-- Uses png first, if not available then use jpg -->
+                    <source media="(min-width:1025px)" srcset="static/clothes/outfit.png">
+                    <source media="(min-width:1025px)" srcset="static/clothes/outfit.jpg">
+
+                    <!-- Outfit scales for phone and tablet screens with regular res -->
+                    <!-- Uses png first, if not available then use jpg -->
+                    <source media="(min-width:320px)" srcset="static/clothes/outfit_small.png">
+                    <source media="(min-width:320px)" srcset="static/clothes/outfit_small.jpg">
+                    <img src="static/clothes/outfit.png" class="img-responsive" alt="Outfit fallback" width="50%">
+                </picture>
             </div>
         </div>
     </div>
 
-    <div class="b-example-divider"></div>
 </main>
-
-
+<div class="footer"
+     style="position: fixed;left: 0;bottom: 0;width: 100%;background-color: #563d7c;color: white;text-align: center;">
+    <p>Eine Webanwendung für das Modul 152 - Erstellt von Julian Mathis und Maurice Bigler</p>
+</div>
 <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
