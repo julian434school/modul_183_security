@@ -47,15 +47,24 @@ def generate_combined_image(images_list: list):
     if os.path.exists("static/clothes/outfit_small.jpg"):
         os.remove("static/clothes/outfit_small.jpg")
 
+    # Alle Bilder des arguments (images_list) als Image Objekt öffnen und in neue variable images speichern
     images = [Image.open(x) for x in images_list]
+
+    # breite und hoehe der bilder nehmen
     widths, heights = zip(*(i.size for i in images))
 
+    # Grösstes bild breite in px in total_width speichern (bsp. breiten 400px + 200px = 400px max width)
     total_width = max(widths)
+    # Summe aller bilderhoehen in max_height speichern (bsp. breiten 400px + 200px = 600px hoehe)
     max_height = sum(heights)
 
+    # neues png-bildrahmen erstellen
     img_png_normal = Image.new('RGBA', (total_width, max_height))
+    # neues jpg-bildrahmen erstellen
     img_jpg_normal = Image.new('RGB', (total_width, max_height))
+    # neues png-bildrahmen mit zweifach-kleinem bildrahmen erstellen
     img_png_small = Image.new('RGBA', (int(total_width / 2), int(max_height / 2)))
+    # neues jpg-bildrahmen mit zweifach-kleinem bildrahmen erstellen
     img_jpg_small = Image.new('RGB', (int(total_width / 2), int(max_height / 2)))
 
     y_offset_regular = 0
