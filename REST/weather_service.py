@@ -157,6 +157,7 @@ def return_clothes_image_logic():
 
 def return_weather_image_logic():
     filtered_obj: FilteredItems = return_needed_info()
+
     weather_status: WeatherStatus = WeatherStatus()
 
     weather_status.moon_stars_image = False

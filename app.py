@@ -10,5 +10,10 @@ def hello_world():
     return render_template('index.html', data=return_needed_info(), weather_data=return_weather_image_logic())
 
 
+@app.route('/kontakt')
+def kontakt():
+    return render_template('kontakt.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
