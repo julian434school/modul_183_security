@@ -13,8 +13,6 @@ if "weatherapp" in dblist:
 else:
     print("The database does not exist, yet")
 
-users_collection.delete_many({})
-
 
 def insert_into_database(username: str, email: str, hashed_password: str, salt: str):
     users_collection.insert_one({"username": username, "email": email, "password": hashed_password, "salt": salt})
@@ -23,10 +21,10 @@ def insert_into_database(username: str, email: str, hashed_password: str, salt: 
         print(x)
 
 
-def check_password(email: str, password: str):
+def check_password(username: str, password: str):
     salt = None
     hashed_password_from_db = None
-    results = users_collection.find({"email": email}, {"_id": 0, "salt": 1, "password": 1})
+    results = users_collection.find({"username": username}, {"_id": 0, "salt": 1, "password": 1})
 
     for x in results:
         print(x)
@@ -38,10 +36,10 @@ def check_password(email: str, password: str):
         # return exception or something else
         pass
 
-    # TODO
-    if bcrypt.checkpw(password.encode('utf-8'), hashed_password_from_db.encode('utf-8')):
-        print("match")
+    if hashed_password_from_db is None:
+        print("PASSWORD NOT FOUND")
     else:
-        print("does not match")
-
-
+        if bcrypt.checkpw(password.encode('utf-8'), hashed_password_from_db.encode('utf-8')):
+            print("match")
+        else:
+            print("does not match")

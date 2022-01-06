@@ -15,10 +15,31 @@
      style="position: fixed;left: 0;top: 0;width: 100%;background-color: #563d7c;color: white;text-align: center; margin">
     <h1>Was-soll-ich-anziehen-outift-generierer <b>PRO</b></h1>
 </div>
+
 <br>
 <main>
-    <div class="b-example-divider"></div>
     <div class="container my-5">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">Home</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    {% if session.username != None %}
+                    <a class="nav-item nav-link active" href="/roles">Rollen verwalten</a>
+                    {% endif %}
+                    {% if session.username == None %}
+                    <a class="nav-item nav-link active" href="/log-in">Login</a>
+                    <a class="nav-item nav-link active" href="/sign-up">Signup</a>
+                    {% endif %}
+                    {% if session.username != None %}
+                    <a class="nav-item nav-link active" href="/logout">Logout</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
         <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 rounded-3 border shadow-lg">
             <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
 

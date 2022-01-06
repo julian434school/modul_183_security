@@ -1,3 +1,5 @@
+import cgi
+
 import bcrypt
 
 from db.register_db_controller import insert_into_database
@@ -12,7 +14,5 @@ def save_data_to_database(username, email, password):
 def hash_password_save_salt(password: str):
     salt = bcrypt.gensalt()
     hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
-
-    print(salt)
 
     return {"hashed_password": hashed, "salt": salt}
