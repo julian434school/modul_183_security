@@ -1,19 +1,24 @@
 import cgi
 
 from flask import Flask, render_template, request, redirect, session
+from flask_wtf import CSRFProtect, csrf
+
 from flask_session import Session
 
 from REST.register_service import save_data_to_database
 from REST.weather_service import *
 from db.register_db_controller import check_password
 import cgitb
-# from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import CSRFProtect
 
 
 app = Flask(__name__)
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
+csrf = CSRFProtect(app)
+csrf.init_app(app)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
-# csrf = CSRFProtect(app)
 Session(app)
 
 
