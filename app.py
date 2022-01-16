@@ -20,7 +20,10 @@ Session(app)
 
 @app.route('/')
 def index():
-    return render_template('index.html', data=return_needed_info(), weather_data=return_weather_image_logic())
+    try:
+        return render_template('index.html', data=return_needed_info(), weather_data=return_weather_image_logic())
+    except Exception:
+        logging.exception("Die Seite konnte nicht geladen werden. Please check the logs!")
 
 
 @app.route('/roles')
@@ -32,7 +35,8 @@ def roles():
             return redirect("/log-in")
         return render_template("roles.html")
     except Exception:
-        logging.exception("Die Rollen konnten nicht angezeigt werden. Dies liegt vermutlich daran, dass der Benutzer nicht eingeloggt ist oder die Session nicht gültig ist!")
+        logging.exception(
+            "Die Rollen konnten nicht angezeigt werden. Dies liegt vermutlich daran, dass der Benutzer nicht eingeloggt ist oder die Session nicht gültig ist!")
 
 
 @app.route("/sign-up", methods=["GET", "POST"])
@@ -54,10 +58,10 @@ def sign_up():
 
             return redirect(request.url)
 
-        return render_template("index.html")
+        return render_template("signup.html")
 
     except Exception:
-        logging.exception("Konnte den Benutzer nicht anlegen")
+        logging.exception("Der Benutzer konnte nicht eingeloggt werden")
 
 
 @app.route("/log-in", methods=["GET", "POST"])
