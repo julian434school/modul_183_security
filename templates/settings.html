@@ -67,6 +67,7 @@
                         </div>
                         <br>
                         {% if session.role != 1 %}
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <button type="submit" class="btn btn-primary">Save</button>
                         {% endif %}
                     </form>
@@ -101,6 +102,7 @@
                             </select>
                         </div>
                         <br>
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
                     <hr>
