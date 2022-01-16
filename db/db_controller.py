@@ -47,7 +47,7 @@ def insert_issue_data(name: str, email: str, check_email: bool, phone: str, chec
     )
 
 
-def update_user_data(old_username: str, username: str, email: str, hashed_password: str, salt: str, role: int):
+def update_valid_user_data(old_username: str, username: str, email: str, hashed_password: str, salt: str, user: str, role: int):
     update_filter = {"username": old_username}
     values = {"$set": {"username": username, "email": email, "password": hashed_password, "salt": salt}}
     users_collection.update_one(update_filter, values)
@@ -85,3 +85,10 @@ def check_password(username: str, password: str):
 
 def getAllUsers():
     return users_collection.find({}, {"username": 1})
+
+
+def is_admin(username: str) -> bool:
+    result = users_collection.find_one({"username": username})
+    if result["role"] is 1:
+        return True
+    return False

@@ -49,14 +49,14 @@
                     <form action="/contact" method="POST">
 
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                   pattern="^[a-zA-Z0-9]{4,20}$" placeholder="Enter your name">
+                            <label for="name">Name*</label>
+                            <input required type="text" class="form-control" id="name" name="name"
+                                   pattern="^[a-zA-Z0-9]{2,40}$" placeholder="Enter your name">
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                   pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" placeholder="Enter email for contact">
+                            <label for="email">Email*</label>
+                            <input required type="email" class="form-control" id="email" name="email"
+                                   pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$" placeholder="Enter email for contact">
                             <input class="form-check-input" type="checkbox" name="checkEmail" id="checkEmail" checked>
                             <label class="form-check-label" for="checkEmail">Contact me over mail</label>
                         </div>
@@ -68,8 +68,8 @@
                             <label class="form-check-label" for="checkPhone">Contact me over phone</label>
                         </div>
                         <div>
-                            <label for="issue">Issue</label>
-                            <select class="form-select" id="issue" name="issue">
+                            <label for="issue">Issue*</label>
+                            <select required class="form-select" id="issue" name="issue">
                                 <option selected disabled>Select your issue</option>
                                 <option value="0">Unsatisfied with service</option>
                                 <option value="1">Functional issues</option>
@@ -78,7 +78,7 @@
                             </select>
                         </div>
                         <label for="comments">Comments</label>
-                        <textarea class="form-control" placeholder="Leave a comment here" id="comments" name="comments" style="height: 100px"></textarea>
+                        <textarea class="form-control" placeholder="Leave a comment here" id="comments" name="comments" maxlength="200" style="height: 100px"></textarea>
                         <br>
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <button type="submit" class="btn btn-primary">Senden</button>
