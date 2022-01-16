@@ -4,9 +4,9 @@ from flask import Flask, render_template, request, redirect, session
 
 from flask_wtf.csrf import CSRFProtect
 
-from REST.transfer_service import save_data_to_database, check_if_user_exists_in_db, update_data, save_form_data
+from REST.transfer_service import check_if_user_exists_in_db, save_issue_data, save_user_data
 from REST.weather_service import *
-from db.db_controller import check_password, getAllUsers
+from db.db_controller import check_password, getAllUsers, update_user_data
 from flask_session import Session
 
 app = Flask(__name__)
@@ -47,7 +47,7 @@ def settings():
             role = req.get("role")
 
             # update
-            update_data(old_username, username, email, password, user, role)  # TODO: CSRF Token missing
+            update_user_data(old_username, username, email, password, user, role)  # TODO: CSRF Token missing
 
             session["username"] = request.form.get("username")
 
@@ -70,7 +70,7 @@ def contact():
         issue = req.get("issue")
         comments = req.get("comments")
 
-        save_form_data(name, email, check_email, phone, check_phone, issue, comments)
+        save_issue_data(name, email, check_email, phone, check_phone, issue, comments)
 
     return render_template('contact.html')
 
@@ -87,7 +87,7 @@ def sign_up():
 
             # check if username exists in db before doing the next step
             if not check_if_user_exists_in_db(username, email):
-                save_data_to_database(username, email, password)
+                save_user_data(username, email, password)
                 session["username"] = request.form.get("username")
                 return redirect(request.url)
 
