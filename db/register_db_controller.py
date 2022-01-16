@@ -14,6 +14,23 @@ else:
     print("The database does not exist, yet")
 
 
+def check_if_user_exists(email: str):
+    results = users_collection.find({"email": email}, {"_id": 0, "username": 1, "email": 1})
+
+    for x in results:
+        print(x)
+        # salt = x.get("salt")
+        # hashed_password_from_db = x.get("password")
+
+    if results is not None:
+        return True
+
+    return False
+
+
+print(check_if_user_exists("julian.mathis04@gmail.com"))
+
+
 def insert_into_database(username: str, email: str, hashed_password: str, salt: str):
     users_collection.insert_one({"username": username, "email": email, "password": hashed_password, "salt": salt})
     for x in users_collection.find():

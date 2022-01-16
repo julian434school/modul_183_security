@@ -4,7 +4,13 @@ import bcrypt
 
 import re
 
-from db.register_db_controller import insert_into_database
+from db.register_db_controller import insert_into_database, check_if_user_exists
+
+
+def check_if_user_exists_in_db(username: str, email: str) -> bool:
+    if check_if_user_exists(username, email):
+        return True
+    return False
 
 
 def save_data_to_database(username, email, password):

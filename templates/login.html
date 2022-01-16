@@ -35,6 +35,7 @@
             </div>
             <div class="row">
                 <div class="col-6">
+                    <h1>Willkommen {{session.username}}</h1>
                     <form action="/log-in" method="POST">
 
                         <div class="form-group">
@@ -49,6 +50,7 @@
                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,40}$" placeholder="Create a password">
                         </div>
                         <br>
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                         <button type="submit" class="btn btn-primary">Log in</button>
                     </form>
                     <hr>
