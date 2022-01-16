@@ -1,11 +1,10 @@
-import logging
 from flask import Flask, render_template, request, redirect, session
 
 from flask_wtf.csrf import CSRFProtect
 
 from REST.register_service import save_data_to_database, check_if_user_exists_in_db
 from REST.weather_service import *
-from db.register_db_controller import check_password
+from db.register_db_controller import check_password, getAllUsers, getAllRoles
 from flask_session import Session
 
 app = Flask(__name__)
@@ -33,7 +32,7 @@ def roles():
         if not session.get("username"):
             # if not there in the session then redirect to the login page
             return redirect("/log-in")
-        return render_template("roles.html")
+        return render_template("roles.html", allUsers=getAllUsers(), allRoles=getAllRoles())
     except Exception:
         logging.exception(
             "Die Rollen konnten nicht angezeigt werden. Dies liegt vermutlich daran, dass der Benutzer nicht eingeloggt ist oder die Session nicht gültig ist!")
@@ -92,6 +91,11 @@ def logout():
         return redirect("/")
     except Exception:
         logging.exception("Der Benutzer konnte nicht ausgeloggt werden")
+
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 
 if __name__ == '__main__':

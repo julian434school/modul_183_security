@@ -40,19 +40,19 @@
                         <div class="form-group">
                             <label>Username</label>
                             <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Select a username">
+                                   pattern="^[a-zA-Z][a-zA-Z0-9-_.]{4,20}$" placeholder="Select a username">
                         </div>
 
                         <div class="form-group">
                             <label>Email</label>
                             <input type="email" class="form-control" id="email" name="email"
-                                   placeholder="Enter your email">
+                                   pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" placeholder="Enter your email">
                         </div>
 
                         <div class="form-group">
                             <label>Password</label>
                             <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="Create a password">
+                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,40}$" placeholder="Create a password">
                         </div>
                         <br>
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
