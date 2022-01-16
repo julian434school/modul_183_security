@@ -8,7 +8,7 @@ from db.register_db_controller import insert_into_database, check_if_user_exists
 
 
 def check_if_user_exists_in_db(username: str, email: str) -> bool:
-    if check_if_user_exists(username, email):
+    if check_if_user_exists(email):
         return True
     return False
 

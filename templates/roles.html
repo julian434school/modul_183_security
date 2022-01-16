@@ -26,7 +26,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="#">Profil verwalten</a>
+                    <a class="nav-item nav-link active" href="/contact">Contact</a>
+                    <a class="nav-item nav-link active" href="#">Settings</a>
                     {% if session.username == None %}
                     <a class="nav-item nav-link" href="#">Login</a>
                     <a class="nav-item nav-link" href="#">Signup</a>
@@ -41,25 +42,60 @@
             <div class="col">
                 <h1>Willkommen {{session.username}}</h1>
                 <hr>
-                <h4>Profil verwalten</h4>
+                <h4>Profilverwaltung</h4>
             </div>
             <div class="row">
                 <div class="col-6">
-                    <form action="/log-in" method="POST">
+                    <form action="/update" method="POST">
 
                         <div class="form-group">
                             <label>Username</label>
                             <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Select a username">
+                                   placeholder="Select new username">
                         </div>
-
-                        <button type="submit" class="btn btn-primary">Log in</button>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="text" class="form-control" id="password" name="password"
+                                   placeholder="Select new username">
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Save</button>
                     </form>
                     <hr>
                 </div>
             </div>
             {% if session.role == 1 %}
-            <!-- Admin stuff -->
+            <div class="col">
+                <h4>Benutzerverwaltung</h4>
+            </div>
+            <div class="row">
+                <div class="col-6">
+                    <form action="/modify" method="POST">
+
+                        <div class="form-group">
+                            <label for="user">User:</label>
+                            <select name="user" id="user">
+                                <option selected disabled>Select User</option>
+                                {% for user in allUsers %}
+                                <option value="user">user</option>
+                                {% vendor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="role">Role:</label>
+                            <select class="form-select" name="role" id="role">
+                                <option selected disabled>Select Role</option>
+                                {% for role in allRoles %}
+                                <option value="role">role</option>
+                                {% vendor %}
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                    <hr>
+                </div>
+            </div>
             {% endif %}
         </div>
 
