@@ -1,7 +1,6 @@
 # http://api.weatherapi.com/v1/current.json?key=c809b1ec469c442c818104121211510&q=Basel&aqi=no
 
 import os
-from pprint import pprint
 
 import requests
 from PIL import Image

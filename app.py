@@ -2,11 +2,11 @@ import logging
 
 from flask import Flask, render_template, request, redirect, session
 from flask_mail import Mail
-from flask_session import Session
-from flask_wtf.csrf import CSRFProtect
 from flask_mail import Message
+from flask_wtf.csrf import CSRFProtect
 
-from REST.transfer_service import check_if_user_exists_in_db, save_issue_data, save_user_data, update_user_data, get_current_role
+from REST.transfer_service import check_if_user_exists_in_db, save_issue_data, save_user_data, update_user_data, \
+    get_current_role
 from REST.weather_service import *
 from db.db_controller import check_password, getAllUsers
 from flask_session import Session
@@ -26,6 +26,9 @@ csrf.init_app(app)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+
+
+logging.basicConfig(filename='error.log', level=logging.error, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 
 @app.route('/')
@@ -59,6 +62,7 @@ def settings():
 
             # update
             if update_user_data(old_username, username, email, password, user, role) is None:
+                app.logger.error("Could not update user data - invalid input")
                 return redirect("/error")
             if req.get("username"):
                 session["username"] = req.get("username")
@@ -89,6 +93,7 @@ def contact():
             comments = req.get("comments")
 
             if save_issue_data(name, email, check_email, phone, check_phone, issue, comments) is None:
+                app.logger.error("Could not save issue data - invalid input")
                 return redirect("/error")
 
             msg = Message("Hello", sender="julian.mathis@bbzbl-it.ch", recipients=["julian.mathis04@gmail.com"])
@@ -116,6 +121,7 @@ def sign_up():
             # check if username exists in db before doing the next step
             if not check_if_user_exists_in_db(username, email):
                 if save_user_data(username, email, password) is None:
+                    app.logger.error("Could not save user data - invalid input")
                     return redirect("/error")
                 session["username"] = request.form.get("username")
                 return redirect(request.url)

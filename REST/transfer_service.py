@@ -1,6 +1,6 @@
-import bcrypt
-
 import re
+
+import bcrypt
 
 from db.db_controller import check_if_user_exists, update_role, insert_user_data, update_valid_user_data, \
     insert_issue_data, \
