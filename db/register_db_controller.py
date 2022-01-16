@@ -24,15 +24,7 @@ if users_collection.count_documents(({"username": "admin", "email": "natascha.we
 
 
 def check_if_user_exists(username: str, email: str):
-    results = users_collection.find({"username": username, "email": email}, {"_id": 0, "username": 1, "email": 1})
-
-    for x in results:
-        print(x)
-        salt = x.get("salt")
-        hashed_password_from_db = x.get("password")
-
-    if results is not None:
-        return True
+    users_collection.count_documents({"username": username, "email": email})
 
     return False
 

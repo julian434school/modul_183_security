@@ -1,3 +1,5 @@
+from typing import re
+
 from flask import Flask, render_template, request, redirect, session
 
 from flask_wtf.csrf import CSRFProtect
@@ -37,6 +39,7 @@ def sign_up():
         req = request.form
 
         username = req.get("username")
+        isValidUsername = re.search("^[a-zA-Z][a-zA-Z0-9-_.]{4,20}$", username)
         email = req.get("email")
         password = req.get("password")
 
