@@ -13,14 +13,23 @@ if "weatherapp" in dblist:
 else:
     print("The database does not exist, yet")
 
+# on initialisation
+salt = bcrypt.gensalt()
+hashed = bcrypt.hashpw("".encode('utf-8'), salt)
 
-def check_if_user_exists(email: str):
-    results = users_collection.find({"email": email}, {"_id": 0, "username": 1, "email": 1})
+if users_collection.count_documents(({"username": "admin", "email": "natascha.wernli@bbzbl-it.ch"})) == 0:
+    users_collection.insert_one({"username": "admin", "email": "natascha.wernli@bbzbl-it.ch",
+                                 "password": hashed.decode('utf-8'),
+                                 "salt": salt.decode('utf-8'), "role": 1})
+
+
+def check_if_user_exists(username: str, email: str):
+    results = users_collection.find({"username": username, "email": email}, {"_id": 0, "username": 1, "email": 1})
 
     for x in results:
         print(x)
-        # salt = x.get("salt")
-        # hashed_password_from_db = x.get("password")
+        salt = x.get("salt")
+        hashed_password_from_db = x.get("password")
 
     if results is not None:
         return True
@@ -28,11 +37,12 @@ def check_if_user_exists(email: str):
     return False
 
 
-print(check_if_user_exists("julian.mathis04@gmail.com"))
+print(check_if_user_exists("admin", "julian.mathis04@gmail.com"))
 
 
 def insert_into_database(username: str, email: str, hashed_password: str, salt: str):
-    users_collection.insert_one({"username": username, "email": email, "password": hashed_password, "salt": salt})
+    users_collection.insert_one(
+        {"username": username, "email": email, "password": hashed_password, "salt": salt, "role": 0})
     for x in users_collection.find():
         print("DB Result: ")
         print(x)
