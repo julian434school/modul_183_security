@@ -10,6 +10,7 @@ from REST.transfer_service import check_if_user_exists_in_db, save_issue_data, s
 from REST.weather_service import *
 from db.db_controller import check_password, getAllUsers
 from flask_session import Session
+from datetime import timedelta
 
 app = Flask(__name__)
 mail = Mail(app)
@@ -29,6 +30,12 @@ Session(app)
 
 
 logging.basicConfig(filename='error.log', level=logging.ERROR, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+
+
+@app.before_request
+def before_request():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=5)
 
 
 @app.route('/')
