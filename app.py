@@ -1,5 +1,4 @@
-from typing import re
-
+import logging
 from flask import Flask, render_template, request, redirect, session
 
 from flask_wtf.csrf import CSRFProtect
@@ -26,56 +25,69 @@ def index():
 
 @app.route('/roles')
 def roles():
-    print(session.get("username"))
-    if not session.get("username"):
-        # if not there in the session then redirect to the login page
-        return redirect("/log-in")
-    return render_template("roles.html")
+    try:
+        print(session.get("username"))
+        if not session.get("username"):
+            # if not there in the session then redirect to the login page
+            return redirect("/log-in")
+        return render_template("roles.html")
+    except Exception:
+        logging.exception("Die Rollen konnten nicht angezeigt werden. Dies liegt vermutlich daran, dass der Benutzer nicht eingeloggt ist oder die Session nicht gültig ist!")
 
 
 @app.route("/sign-up", methods=["GET", "POST"])
 def sign_up():
-    if request.method == "POST":
-        req = request.form
+    try:
+        if request.method == "POST":
+            req = request.form
 
-        username = req.get("username")
-        isValidUsername = re.search("^[a-zA-Z][a-zA-Z0-9-_.]{4,20}$", username)
-        email = req.get("email")
-        password = req.get("password")
+            username = req.get("username")
+            email = req.get("email")
+            password = req.get("password")
 
-        session["username"] = request.form.get("username")
+            session["username"] = request.form.get("username")
 
-        # check if username exists in db before doing the next step
-        check_if_user_exists_in_db(username, email)
+            # check if username exists in db before doing the next step
+            check_if_user_exists_in_db(username, email)
 
-        save_data_to_database(username, email, password)
+            save_data_to_database(username, email, password)
 
-        return redirect(request.url)
+            return redirect(request.url)
 
-    return render_template("signup.html")
+        return render_template("index.html")
+
+    except Exception:
+        logging.exception("Konnte den Benutzer nicht anlegen")
 
 
 @app.route("/log-in", methods=["GET", "POST"])
 def log_in():
-    if request.method == "POST":
-        req = request.form
+    try:
+        if request.method == "POST":
+            req = request.form
 
-        username = req.get("username")
-        password = req.get("password")
+            username = req.get("username")
+            password = req.get("password")
 
-        check_password(username, password)
+            check_password(username, password)
 
-        session["username"] = request.form.get("username")
+            session["username"] = request.form.get("username")
 
-        return redirect("/")
+            return redirect("index.html")
 
-    return render_template("login.html")
+        return render_template("login.html")
+
+    except Exception:
+        logging.exception("Der Benutzer konnte nicht eingeloggt werden")
 
 
 @app.route('/logout')
 def logout():
-    session["username"] = None
-    return redirect("/")
+    try:
+        session["username"] = None
+        return redirect("/")
+    except Exception:
+        logging.exception("Der Benutzer konnte nicht ausgeloggt werden")
 
 
 if __name__ == '__main__':
