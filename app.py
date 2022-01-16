@@ -28,7 +28,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 
-logging.basicConfig(filename='error.log', level=logging.error, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+logging.basicConfig(filename='error.log', level=logging.ERROR, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
 
 @app.route('/')
@@ -36,8 +36,8 @@ def index():
     try:
         session["role"] = None
         return render_template('index.html', data=return_needed_info(), weather_data=return_weather_image_logic())
-    except Exception:
-        app.logger.error(Exception)
+    except Exception as e:
+        app.logger.error(e)
         return redirect("/error")
 
 
@@ -68,8 +68,8 @@ def settings():
                 session["username"] = req.get("username")
 
         return render_template("settings.html", allUsers=getAllUsers())
-    except Exception:
-        app.logger.error(Exception)
+    except Exception as e:
+        app.logger.error(e)
         return redirect("/error")
 
 
@@ -103,8 +103,8 @@ def contact():
 
         return render_template('contact.html')
 
-    except Exception:
-        app.logger.error(Exception)
+    except Exception as e:
+        app.logger.error(e)
         return redirect("/error")
 
 
@@ -128,8 +128,8 @@ def sign_up():
 
         return render_template("signup.html")
 
-    except Exception:
-        app.logger.error(Exception)
+    except Exception as e:
+        app.logger.error(e)
         return redirect("/error")
 
 
@@ -150,8 +150,8 @@ def log_in():
 
         return render_template("login.html")
 
-    except Exception:
-        app.logger.error(Exception)
+    except Exception as e:
+        app.logger.error(e)
         return redirect("/error")
 
 
@@ -160,8 +160,8 @@ def logout():
     try:
         session["username"] = None
         return redirect("/")
-    except Exception:
-        app.logger.error(Exception)
+    except Exception as e:
+        app.logger.error(e)
         return redirect("/error")
 
 
