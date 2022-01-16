@@ -97,7 +97,10 @@ def logout():
 
 @app.route('/contact')
 def contact():
-    return render_template('contact.html')
+    try:
+        return render_template('contact.html')
+    except Exception:
+        logging.exception("Die Kontakt-Seite konnte nicht geladen werden")
 
 
 if __name__ == '__main__':

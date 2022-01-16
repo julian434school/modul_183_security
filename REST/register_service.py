@@ -1,8 +1,6 @@
-import cgi
+import re
 
 import bcrypt
-
-import re
 
 from db.register_db_controller import insert_into_database, check_if_user_exists
 
