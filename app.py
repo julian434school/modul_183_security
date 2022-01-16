@@ -1,16 +1,11 @@
-import cgi
-
 from flask import Flask, render_template, request, redirect, session
-from flask_wtf import CSRFProtect, csrf
 
-from flask_session import Session
-
-from REST.register_service import save_data_to_database
-from REST.weather_service import *
-from db.register_db_controller import check_password
-import cgitb
 from flask_wtf.csrf import CSRFProtect
 
+from REST.register_service import save_data_to_database, check_if_user_exists_in_db
+from REST.weather_service import *
+from db.register_db_controller import check_password
+from flask_session import Session
 
 app = Flask(__name__)
 SECRET_KEY = os.urandom(32)
@@ -41,11 +36,14 @@ def sign_up():
     if request.method == "POST":
         req = request.form
 
-        username = req.get("username").encode()
+        username = req.get("username")
         email = req.get("email")
         password = req.get("password")
 
         session["username"] = request.form.get("username")
+
+        # check if username exists in db before doing the next step
+        check_if_user_exists_in_db(username, email)
 
         save_data_to_database(username, email, password)
 
