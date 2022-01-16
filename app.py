@@ -30,6 +30,7 @@ def index():
 @app.route('/settings', methods=["GET", "POST"])
 def settings():
     try:
+        print(session.get("username"))
         if not session.get("username"):
             # if not there in the session then redirect to the login page
             return redirect("/log-in")
@@ -90,7 +91,7 @@ def sign_up():
                 session["username"] = request.form.get("username")
                 return redirect(request.url)
 
-        return render_template("/sign-up")
+        return render_template("signup.html")
 
     except Exception:
         logging.exception("Der Benutzer konnte nicht eingeloggt werden")
