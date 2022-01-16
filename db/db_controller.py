@@ -9,13 +9,8 @@ users_collection = database["users"]
 issues_collection = database["issues"]
 
 dblist = mongodb_client.list_database_names()
-if "weatherapp" in dblist:
-    print("The database exists.")
-else:
-    print("The database does not exist, yet")
 
 # on initialisation
-# TODO: create script?
 salt = bcrypt.gensalt()
 hashed = bcrypt.hashpw("Password1".encode('utf-8'), salt)
 
@@ -34,9 +29,6 @@ def check_if_user_exists(username: str, email: str):
 def insert_user_data(username: str, email: str, hashed_password: str, salt: str):
     users_collection.insert_one(
         {"username": username, "email": email, "password": hashed_password, "salt": salt, "role": 0})
-    for x in users_collection.find():
-        print("DB Result: ")
-        print(x)
 
 
 def insert_issue_data(name: str, email: str, check_email: bool, phone: str, check_phone: bool, issue: str,
@@ -59,28 +51,22 @@ def update_role(user: str, role: int):
     users_collection.update_one(update_filter, values)
 
 
-def check_password(username: str, password: str):
+def check_password(username: str, password: str) -> str:
     salt = None
     hashed_password_from_db = None
     results = users_collection.find({"username": username}, {"_id": 0, "salt": 1, "password": 1})
 
     for x in results:
-        print(x)
         salt = x.get("salt")
         hashed_password_from_db = x.get("password")
-    print(salt)
 
-    if salt is None:
-        # return exception or something else
-        pass
-
-    if hashed_password_from_db is None:
-        print("PASSWORD NOT FOUND")
+    if hashed_password_from_db is None or salt is None:
+        return None
     else:
         if bcrypt.checkpw(password.encode('utf-8'), hashed_password_from_db.encode('utf-8')):
-            print("match")
+            return "success"
         else:
-            print("does not match")
+            return None
 
 
 def getAllUsers():
@@ -89,6 +75,6 @@ def getAllUsers():
 
 def is_admin(username: str) -> bool:
     result = users_collection.find_one({"username": username})
-    if result["role"] is 1:
+    if result["role"] == 1:
         return True
     return False

@@ -149,7 +149,9 @@ def log_in():
             username = req.get("username")
             password = req.get("password")
 
-            check_password(username, password)
+            if check_password(username, password) is None:
+                app.logger.error("Password or salt not found")
+                return redirect("/error")
 
             session["username"] = request.form.get("username")
 
