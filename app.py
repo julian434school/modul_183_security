@@ -1,3 +1,5 @@
+import logging
+
 from flask import Flask, render_template, request, redirect, session
 
 from flask_wtf.csrf import CSRFProtect
@@ -25,14 +27,14 @@ def index():
         logging.exception("Die Seite konnte nicht geladen werden. Please check the logs!")
 
 
-@app.route('/roles')
-def roles():
+@app.route('/settings')
+def settings():
     try:
         print(session.get("username"))
         if not session.get("username"):
             # if not there in the session then redirect to the login page
             return redirect("/log-in")
-        return render_template("roles.html", allUsers=getAllUsers(), allRoles=getAllRoles())
+        return render_template("settings.html", allUsers=getAllUsers(), allRoles=getAllRoles())
     except Exception:
         logging.exception(
             "Die Rollen konnten nicht angezeigt werden. Dies liegt vermutlich daran, dass der Benutzer nicht eingeloggt ist oder die Session nicht gültig ist!")
