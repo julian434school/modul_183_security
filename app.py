@@ -1,8 +1,10 @@
 import logging
 
 from flask import Flask, render_template, request, redirect, session
-
+from flask_mail import Mail
+from flask_session import Session
 from flask_wtf.csrf import CSRFProtect
+from flask_mail import Message
 
 from REST.transfer_service import check_if_user_exists_in_db, save_issue_data, save_user_data
 from REST.weather_service import *
@@ -10,6 +12,7 @@ from db.db_controller import check_password, getAllUsers, update_user_data
 from flask_session import Session
 
 app = Flask(__name__)
+mail = Mail(app)
 SECRET_KEY = os.urandom(32)
 app.config['SECRET_KEY'] = SECRET_KEY
 csrf = CSRFProtect(app)
@@ -72,6 +75,10 @@ def contact():
 
         save_issue_data(name, email, check_email, phone, check_phone, issue, comments)
 
+        msg = Message("Hello", sender="julian.mathis@bbzbl-it.ch", recipients=["julian.mathis04@gmail.com"])
+
+        mail.send(msg)
+
     return render_template('contact.html')
 
 
@@ -89,6 +96,7 @@ def sign_up():
             if not check_if_user_exists_in_db(username, email):
                 save_user_data(username, email, password)
                 session["username"] = request.form.get("username")
+                session["role"] = 0
                 return redirect(request.url)
 
         return render_template("signup.html")

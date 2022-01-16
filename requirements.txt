@@ -3,6 +3,7 @@ requests~=2.26.0
 flask-sqlalchemy
 flask-login
 flask-session
+flask-mail
 flask-wtf
 pymongo
 bcrypt
