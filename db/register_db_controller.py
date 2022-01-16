@@ -24,8 +24,8 @@ if users_collection.count_documents(({"username": "admin", "email": "natascha.we
 
 
 def check_if_user_exists(username: str, email: str):
-    users_collection.count_documents({"username": username, "email": email})
-
+    if users_collection.count_documents({"username": username, "email": email}) == 1:
+        return True
     return False
 
 
