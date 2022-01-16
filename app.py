@@ -99,7 +99,7 @@ def contact():
             msg = Message("Hello", sender="julian.mathis@bbzbl-it.ch", recipients=["julian.mathis04@gmail.com"])
             msg.body = "Python Flask Test"
 
-            mail.send(msg)
+            # mail.send(msg)
 
         return render_template('contact.html')
 
