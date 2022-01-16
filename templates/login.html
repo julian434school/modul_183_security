@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <label>Password</label>
                             <input type="password" class="form-control" id="password" name="password"
-                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*_=+-]).{8,40}$" placeholder="Create a password">
+                                   pattern="^(?=.*[a-z])(?=.*[A-Z]).{8,40}$" placeholder="Create a password">
                         </div>
                         <br>
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

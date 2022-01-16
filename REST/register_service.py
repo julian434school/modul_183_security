@@ -25,8 +25,8 @@ def save_data_to_database(username, email, password):
 
 def isValid(username: str, email: str, password: str):
     isValidUsername = re.search("^[a-zA-Z][a-zA-Z0-9-_.]{4,20}$", username)
-    isValidEmail = re.search("^[a-zA-Z][a-zA-Z0-9-_.]{4,20}$", email)
-    isValidPassword = re.search("^[a-zA-Z][a-zA-Z0-9-_.]{4,20}$", password)
+    isValidEmail = re.search("^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", email)
+    isValidPassword = re.search("^(?=.*[a-z])(?=.*[A-Z]).{8,40}$", password)
     return isValidUsername and isValidEmail and isValidPassword
 
 
