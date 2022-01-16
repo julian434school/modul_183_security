@@ -4,9 +4,9 @@ from flask import Flask, render_template, request, redirect, session
 
 from flask_wtf.csrf import CSRFProtect
 
-from REST.register_service import save_data_to_database, check_if_user_exists_in_db
+from REST.transfer_service import save_data_to_database, check_if_user_exists_in_db, update_data, save_form_data
 from REST.weather_service import *
-from db.register_db_controller import check_password, getAllUsers, getAllRoles
+from db.db_controller import check_password, getAllUsers
 from flask_session import Session
 
 app = Flask(__name__)
@@ -27,17 +27,51 @@ def index():
         logging.exception("Die Seite konnte nicht geladen werden. Please check the logs!")
 
 
-@app.route('/settings')
+@app.route('/settings', methods=["GET", "POST"])
 def settings():
     try:
-        print(session.get("username"))
         if not session.get("username"):
             # if not there in the session then redirect to the login page
             return redirect("/log-in")
-        return render_template("settings.html", allUsers=getAllUsers(), allRoles=getAllRoles())
+
+        if request.method == "POST":
+            req = request.form
+
+            old_username = session["username"]
+            username = req.get("username")
+            email = req.get("email")
+            password = req.get("password")
+
+            user = req.get("user")
+            role = req.get("role")
+
+            # update
+            update_data(old_username, username, email, password, user, role)  # TODO: CSRF Token missing
+
+            session["username"] = request.form.get("username")
+
+        return render_template("settings.html", allUsers=getAllUsers())
     except Exception:
         logging.exception(
             "Die Rollen konnten nicht angezeigt werden. Dies liegt vermutlich daran, dass der Benutzer nicht eingeloggt ist oder die Session nicht gültig ist!")
+
+
+@app.route('/contact', methods=["GET", "POST"])
+def contact():
+    if request.method == "POST":
+        req = request.form
+
+        name = req.get("name")
+        email = req.get("email")
+        check_email = req.get("checkEmail")
+        phone = req.get("tel")
+        check_phone = req.get("checkPhone")
+        issue = req.get("issue")
+        comments = req.get("comments")
+
+        save_form_data(name, email, check_email, phone, check_phone, issue, comments)
+
+    return render_template('contact.html')
 
 
 @app.route("/sign-up", methods=["GET", "POST"])
@@ -50,16 +84,13 @@ def sign_up():
             email = req.get("email")
             password = req.get("password")
 
-            session["username"] = request.form.get("username")
-
             # check if username exists in db before doing the next step
-            check_if_user_exists_in_db(username, email)
+            if not check_if_user_exists_in_db(username, email):
+                save_data_to_database(username, email, password)
+                session["username"] = request.form.get("username")
+                return redirect(request.url)
 
-            save_data_to_database(username, email, password)
-
-            return redirect(request.url)
-
-        return render_template("signup.html")
+        return render_template("/sign-up")
 
     except Exception:
         logging.exception("Der Benutzer konnte nicht eingeloggt werden")
@@ -78,7 +109,7 @@ def log_in():
 
             session["username"] = request.form.get("username")
 
-            return redirect("index.html")
+            return redirect("/")
 
         return render_template("login.html")
 
@@ -93,11 +124,6 @@ def logout():
         return redirect("/")
     except Exception:
         logging.exception("Der Benutzer konnte nicht ausgeloggt werden")
-
-
-@app.route('/contact')
-def contact():
-    return render_template('contact.html')
 
 
 if __name__ == '__main__':

@@ -46,51 +46,61 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <form action="/update" method="POST">
+                    <form action="/settings" method="POST">
 
                         <div class="form-group">
                             <label>Username</label>
                             <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Select new username">
+                                   pattern="^[a-zA-Z][a-zA-Z0-9-_.]{4,20}$" placeholder="Select new username">
                         </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" placeholder="Enter new email">
+                        </div>
+
                         <div class="form-group">
                             <label>Password</label>
                             <input type="text" class="form-control" id="password" name="password"
-                                   placeholder="Select new username">
+                                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,40}$" placeholder="Select new username">
                         </div>
                         <br>
+                        {% if session.role != 1 %}
                         <button type="submit" class="btn btn-primary">Save</button>
+                        {% endif %}
                     </form>
                     <hr>
                 </div>
             </div>
             {% if session.role == 1 %}
+            <!--TODO: not working? session.role?-->
             <div class="col">
-                <h4>Benutzerverwaltung</h4>
+                <h4>Rollenverwaltung</h4>
             </div>
             <div class="row">
                 <div class="col-6">
-                    <form action="/modify" method="POST">
+                    <form action="/settings" method="POST">
 
                         <div class="form-group">
                             <label for="user">User:</label>
-                            <select name="user" id="user">
-                                <option selected disabled>Select User</option>
-                                {% for user in allUsers %}
-                                <option value="user">user</option>
-                                {% vendor %}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="role">Role:</label>
-                            <select class="form-select" name="role" id="role">
-                                <option selected disabled>Select Role</option>
-                                {% for role in allRoles %}
-                                <option value="role">role</option>
-                                {% vendor %}
+                            <select class="form-select" name="user" id="user">
+                                <option value="default" selected disabled>Select User</option>
+                                {% for item in allUsers %}
+                                <option value={{ item.username }}>{{ item.username }}</option>
+                                {% endfor %}
                             </select>
                         </div>
 
+                        <div class="form-group">
+                            <label for="role">Role:</label>
+                            <select class="form-select" name="role" id="role">
+                                <option value="default" selected disabled>Select Role</option>
+                                <option value="0">User</option>
+                                <option value="1">Admin</option>
+                            </select>
+                        </div>
+                        <br>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
                     <hr>

@@ -6,6 +6,7 @@ mongodb_client = MongoClient('localhost', 27017)
 database = mongodb_client["weatherapp"]
 
 users_collection = database["users"]
+issues_collection = database["issues"]
 
 dblist = mongodb_client.list_database_names()
 if "weatherapp" in dblist:
@@ -14,8 +15,9 @@ else:
     print("The database does not exist, yet")
 
 # on initialisation
+# TODO: create script?
 salt = bcrypt.gensalt()
-hashed = bcrypt.hashpw("".encode('utf-8'), salt)
+hashed = bcrypt.hashpw("Password1".encode('utf-8'), salt)
 
 if users_collection.count_documents(({"username": "admin", "email": "natascha.wernli@bbzbl-it.ch"})) == 0:
     users_collection.insert_one({"username": "admin", "email": "natascha.wernli@bbzbl-it.ch",
@@ -29,12 +31,32 @@ def check_if_user_exists(username: str, email: str):
     return False
 
 
-def insert_into_database(username: str, email: str, hashed_password: str, salt: str):
+def insert_user_data(username: str, email: str, hashed_password: str, salt: str):
     users_collection.insert_one(
         {"username": username, "email": email, "password": hashed_password, "salt": salt, "role": 0})
     for x in users_collection.find():
         print("DB Result: ")
         print(x)
+
+
+def insert_issue_data(name: str, email: str, check_email: bool, phone: str, check_phone: bool, issue: str,
+                     comments: str):
+    issues_collection.insert_one(
+        {"name": name, "email": email, "check_email": check_email, "phone": phone, "check_phone": check_phone,
+         "issue": issue, "comments": comments}
+    )
+
+
+def update_user_data(old_username: str, username: str, email: str, hashed_password: str, salt: str, role: int):
+    update_filter = {"username": old_username}
+    values = {"$set": {"username": username, "email": email, "password": hashed_password, "salt": salt}}
+    users_collection.update_one(update_filter, values)
+
+
+def update_role(user: str, role: int):
+    update_filter = {"username": user}
+    values = {"$set": {"role": role}}
+    users_collection.update_one(update_filter, values)
 
 
 def check_password(username: str, password: str):
@@ -63,7 +85,3 @@ def check_password(username: str, password: str):
 
 def getAllUsers():
     return users_collection.find({}, {"username": 1})
-
-
-def getAllRoles():
-    return users_collection.find({}, {"role": 1})

@@ -46,7 +46,7 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <form action="/mail" method="POST">
+                    <form action="/contact" method="POST">
 
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -57,19 +57,19 @@
                             <label for="email">Email</label>
                             <input type="email" class="form-control" id="email" name="email"
                                    pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" placeholder="Enter email for contact">
-                            <input class="form-check-input" type="checkbox" value="" id="checkEmail" checked>
+                            <input class="form-check-input" type="checkbox" name="checkEmail" id="checkEmail" checked>
                             <label class="form-check-label" for="checkEmail">Contact me over mail</label>
                         </div>
                         <div class="form-group">
                             <label for="tel">Phone</label>
                             <input type="tel" class="form-control" id="tel" name="tel"
                                    pattern="^(\+41|0041|0){1}(\(0\))?[0-9]{9}$" placeholder="Enter number for contact">
-                            <input class="form-check-input" type="checkbox" value="" id="checkPhone" checked>
+                            <input class="form-check-input" type="checkbox" name="checkPhone" id="checkPhone" checked>
                             <label class="form-check-label" for="checkPhone">Contact me over phone</label>
                         </div>
                         <div>
-                            <label for="checkEmail">Issue</label>
-                            <select class="form-select">
+                            <label for="issue">Issue</label>
+                            <select class="form-select" id="issue" name="issue">
                                 <option selected disabled>Select your issue</option>
                                 <option value="0">Unsatisfied with service</option>
                                 <option value="1">Functional issues</option>
@@ -78,7 +78,7 @@
                             </select>
                         </div>
                         <label for="comments">Comments</label>
-                        <textarea class="form-control" placeholder="Leave a comment here" id="comments" style="height: 100px"></textarea>
+                        <textarea class="form-control" placeholder="Leave a comment here" id="comments" name="comments" style="height: 100px"></textarea>
                         <br>
                         <button type="submit" class="btn btn-primary">Save</button>
                     </form>
