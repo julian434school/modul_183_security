@@ -66,8 +66,8 @@
                                    pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,40}$" placeholder="Enter new password">
                         </div>
                         <br>
-                        {% if session.role != 1 %}
                         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                        {% if session.role != 1 %}
                         <button type="submit" class="btn btn-primary">Save</button>
                         {% endif %}
                     </form>

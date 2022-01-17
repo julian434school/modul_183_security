@@ -64,8 +64,12 @@ def settings():
             email = req.get("email")
             password = req.get("password")
 
-            user = req.get("user")
-            role = req.get("role")
+            user = None
+            role = None
+
+            if session["role"] == 1:
+                user = req.get("user")
+                role = req.get("role")
 
             # update
             if update_user_data(old_username, username, email, password, user, role) is None:

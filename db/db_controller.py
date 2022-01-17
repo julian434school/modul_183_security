@@ -39,7 +39,7 @@ def insert_issue_data(name: str, email: str, check_email: bool, phone: str, chec
     )
 
 
-def update_valid_user_data(old_username: str, username: str, email: str, hashed_password: str, salt: str, user: str, role: int):
+def update_valid_user_data(old_username: str, username: str, email: str, hashed_password: str, salt: str):
     update_filter = {"username": old_username}
     values = {"$set": {"username": username, "email": email, "password": hashed_password, "salt": salt}}
     users_collection.update_one(update_filter, values)
